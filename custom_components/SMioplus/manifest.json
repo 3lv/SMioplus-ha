@@ -1,0 +1,13 @@
+{
+	"domain": "SMioplus",
+	"name": "Sequent Microsystems Home Automation Integraion",
+	"version": "1.0.0",
+	"integration_type": "device",
+	"documentation": "https://TODO",
+	"issue_tracker": "https://TODO",
+	"dependencies": [],
+	"after_dependencies": [],
+	"codeownders": ["3lv"],
+	"config_flow": false,
+	"requirements": ["libioplus"]
+}
