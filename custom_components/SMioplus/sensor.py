@@ -59,10 +59,9 @@ class Sensor(SensorEntity):
         self._uom = SM_SENSOR_MAP[self._type]["uom"]
         self._value = 0
         self._SM_get = getattr(self._SM, com["get"])
-        if len(signature(self._SM_get).parameters) == 0:
-            def _aux_SM_get(self, _):
-                return getattr(self, com["get"])()
-            self._SM_get = types.MethodType(_aux_SM_get, self._SM)
+        def _aux_SM_get(*args):
+            return getattr(self._SM, com["get"])(self._stack, *args)
+        self._SM_get = _aux_SM_get
 
     def update(self):
         time.sleep(self._short_timeout)
