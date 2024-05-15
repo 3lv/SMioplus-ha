@@ -51,7 +51,7 @@ class Switch(SwitchEntity):
         def _aux_SM_set(*args):
             return getattr(self._SM, com["set"])(self._stack, *args)
         self._SM_set = _aux_SM_set
-        self._is_on = self._SM_get(self.stack, self._chan)
+        self._is_on = self._SM_get(self._chan)
         self._short_timeout = .05
         self._icons = SM_SWITCH_MAP[self._type]["icon"]
         self._icon = self._icons["off"]
