@@ -20,7 +20,7 @@ SM_MAP = {
                 "chan_no": 8,
                 "uom": "",
                 "com": {
-                    "get": "getoptoch",
+                    "get": "getOptoCh",
                 },
                 "icon": {
                     "on": "mdi:mdi-numeric",
@@ -60,7 +60,7 @@ SM_MAP = {
                 "max_value": 10.0,
                 "step": 0.01,
                 "com": {
-                    "get": "get_u_out",
+                    "get": "setDacV", # TODO: CHANGE THIS TEMPORARY SOLUTION
                     "set": "setDacV"
                 },
                 "icon": {
