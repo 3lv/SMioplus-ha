@@ -20,11 +20,22 @@ SM_MAP = {
                 "chan_no": 8,
                 "uom": "",
                 "com": {
-                    "get": "getOptoCh",
+                    "get": "getoptoch",
                 },
                 "icon": {
                     "on": "mdi:mdi-numeric",
                     "off": "mdi:mdi-numeric"
+                }
+        },
+        "adc": {
+                "chan_no": 8,
+                "uom": "V",
+                "com": {
+                    "get": "getAdcV",
+                },
+                "icon": {
+                    "on": "mdi:flash-triangle",
+                    "off": "mdi:flash-triangle"
                 }
         },
     },
@@ -40,6 +51,23 @@ SM_MAP = {
                     "off": "mdi:toggle-switch-variant-off",
                 }
         }
+    },
+    "number": {
+        "dac": {
+                "chan_no": 4,
+                "uom": "V",
+                "min_value": 0.0,
+                "max_value": 10.0,
+                "step": 0.01,
+                "com": {
+                    "get": "get_u_out",
+                    "set": "setDacV"
+                },
+                "icon": {
+                    "on": "mdi:flash-triangle",
+                    "off": "mdi:flash-triangle"
+                }
+        },
     },
 }
 
