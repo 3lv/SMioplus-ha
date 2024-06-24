@@ -86,6 +86,7 @@ def load_platform(hass, entity_config):
                 hass.helpers.discovery.load_platform(
                         platform_type, DOMAIN, entity_config, entity_config
                 )
+
 def load_all_platforms(hass, stack=0):
     for platform_type, platform in SM_MAP.items():
         for type, attr in platform.items():
