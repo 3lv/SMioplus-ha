@@ -11,6 +11,7 @@ CONF_NAME = CONF_NAME
 CONF_STACK = "stack"
 CONF_TYPE = "type"
 CONF_CHAN = "chan"
+COM_NOGET = "__NOGET__"
 
 DOMAIN = "SMioplus"
 NAME_PREFIX = "smio"
@@ -60,7 +61,7 @@ SM_MAP = {
                 "max_value": 10.0,
                 "step": 0.01,
                 "com": {
-                    "get": "setDacV", # TODO: CHANGE THIS TEMPORARY SOLUTION
+                    "get": "__NOGET__", # TODO: CHANGE THIS TEMPORARY SOLUTION
                     "set": "setDacV"
                 },
                 "icon": {
@@ -89,7 +90,6 @@ def load_platform(hass, entity_config):
 
 def load_all_platforms(hass, stack=0):
     for platform_type, platform in SM_MAP.items():
-        _LOGGER.error(platform_type)
         for type, attr in platform.items():
             if attr.get("optional", False):
                 continue

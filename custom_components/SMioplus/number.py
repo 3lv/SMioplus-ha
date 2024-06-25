@@ -15,6 +15,7 @@ from homeassistant.helpers.entity import generate_entity_id
 
 from . import (
         DOMAIN, CONF_STACK, CONF_TYPE, CONF_CHAN, CONF_NAME,
+        COM_NOGET,
         NAME_PREFIX,
         SM_MAP
 )
@@ -24,14 +25,23 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     # We want this platform to be setup via discovery
     if discovery_info == None:
         return
-    _LOGGER.error("DEBUG")
-    add_devices([Number(
-		name=discovery_info.get(CONF_NAME, ""),
-        stack=discovery_info.get(CONF_STACK, 0),
-        type=discovery_info.get(CONF_TYPE),
-        chan=discovery_info.get(CONF_CHAN),
-        hass=hass
-	)])
+    type=discovery_info.get(CONF_TYPE)
+    if SM_NUMBER_MAP[type]["com"]["get"] == COM_NOGET:
+        add_devices([Number_NOGET(
+            name=discovery_info.get(CONF_NAME, ""),
+            stack=discovery_info.get(CONF_STACK, 0),
+            type=discovery_info.get(CONF_TYPE),
+            chan=discovery_info.get(CONF_CHAN),
+            hass=hass
+        )])
+    else:
+        add_devices([Number(
+            name=discovery_info.get(CONF_NAME, ""),
+            stack=discovery_info.get(CONF_STACK, 0),
+            type=discovery_info.get(CONF_TYPE),
+            chan=discovery_info.get(CONF_CHAN),
+            hass=hass
+        )])
 
 class Number(NumberEntity):
     """Sequent Microsystems Multiio Switch"""
@@ -108,5 +118,20 @@ class Number(NumberEntity):
     def set_native_value(self, value):
         try:
             self._SM_set(self._chan, value)
+        except Exception as ex:
+            _LOGGER.error(DOMAIN + " %s setting value failed, %e", self._type, ex)
+
+class Number_NOGET(Number):
+    def update(self):
+        time.sleep(self._short_timeout)
+        if self._value != 0:
+            self._icon = self._icons["on"]
+        else:
+            self._icon = self._icons["off"]
+
+    def set_native_value(self, value):
+        try:
+            self._SM_set(self._chan, value)
+            self._value = value
         except Exception as ex:
             _LOGGER.error(DOMAIN + " %s setting value failed, %e", self._type, ex)
