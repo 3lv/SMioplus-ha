@@ -53,8 +53,6 @@ class Number(NumberEntity):
         self._type = type
         self._chan = int(chan)
         self._SM = SMioplus
-        # Altering class so all functions have the same format
-        com = SM_NUMBER_MAP[self._type]["com"]
         self._short_timeout = .05
         self._icons = SM_NUMBER_MAP[self._type]["icon"]
         self._icon = self._icons["off"]
@@ -63,9 +61,14 @@ class Number(NumberEntity):
         self._max_value = SM_NUMBER_MAP[self._type]["max_value"]
         self._step = SM_NUMBER_MAP[self._type]["step"]
         self._value = 0
+        self.__init_getset__()
+
+    def __init_getset__(self):
+        # Altering class so all functions have the same format
+        com = SM_NUMBER_MAP[self._type]["com"]
         self._SM_get = getattr(self._SM, com["get"])
         def _aux_SM_get(*args):
-            return 6.9
+            return getattr(self._SM, com["get"])(self._stack, *args)
         self._SM_get = _aux_SM_get
         def _aux_SM_set(*args):
             return getattr(self._SM, com["set"])(self._stack, *args)
@@ -135,3 +138,10 @@ class Number_NOGET(Number):
             self._value = value
         except Exception as ex:
             _LOGGER.error(DOMAIN + " %s setting value failed, %e", self._type, ex)
+
+    def __init_getset__(self):
+        com = SM_NUMBER_MAP[self._type]["com"]
+        # Skip _SM_get command
+        def _aux_SM_set(*args):
+            return getattr(self._SM, com["set"])(self._stack, *args)
+        self._SM_set = _aux_SM_set
