@@ -89,6 +89,7 @@ def load_platform(hass, entity_config):
 
 def load_all_platforms(hass, stack=0):
     for platform_type, platform in SM_MAP.items():
+        _LOGGER.error(platform_type)
         for type, attr in platform.items():
             if attr.get("optional", False):
                 continue
