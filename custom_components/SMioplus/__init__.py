@@ -69,6 +69,21 @@ SM_MAP = {
                     "off": "mdi:flash-triangle"
                 }
         },
+        "od": {
+                "chan_no": 4,
+                "uom": "%",
+                "min_value": 0.0,
+                "max_value": 100.0,
+                "step": 0.01,
+                "com": {
+                    "get": "__NOGET__", # TODO: CHANGE THIS TEMPORARY SOLUTION
+                    "set": "setOdPwm"
+                },
+                "icon": {
+                    "on": "mdi:flash-triangle",
+                    "off": "mdi:flash-triangle"
+                }
+        },
     },
 }
 
