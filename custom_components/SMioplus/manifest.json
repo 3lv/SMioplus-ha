@@ -9,5 +9,5 @@
 	"after_dependencies": [],
 	"codeownders": ["3lv"],
 	"config_flow": false,
-	"requirements": ["SMioplus>=1.0.4"]
+	"requirements": ["SMioplus>=1.0.5"]
 }
