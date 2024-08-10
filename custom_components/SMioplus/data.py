@@ -46,7 +46,8 @@ SM_MAP = {
                 "max_value": 10.0,
                 "step": 0.01,
                 "com": {
-                    "get": "__NOGET__", # TODO: CHANGE THIS TEMPORARY SOLUTION
+                    #"get": "__NOGET__",
+                    "get": "getDacV",
                     "set": "setDacV"
                 },
                 "icon": {
@@ -61,7 +62,7 @@ SM_MAP = {
                 "max_value": 100.0,
                 "step": 0.01,
                 "com": {
-                    "get": "__NOGET__", # TODO: CHANGE THIS TEMPORARY SOLUTION
+                    "get": "getOdPwm",
                     "set": "setOdPwm"
                 },
                 "icon": {
