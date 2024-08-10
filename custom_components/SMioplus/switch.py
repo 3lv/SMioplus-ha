@@ -69,6 +69,10 @@ class Switch(SwitchEntity):
             self._icon = self._icons["off"]
 
     @property
+    def unique_id(self):
+        return self._unique_id
+
+    @property
     def name(self):
         return self._name
 
