@@ -62,8 +62,8 @@ SM_MAP = {
                 "max_value": 100.0,
                 "step": 0.01,
                 "com": {
-                    "get": "getOdPwm",
-                    "set": "setOdPwm"
+                    "get": "_fixed_getOdPwm",
+                    "set": "_fixed_setOdPwm"
                 },
                 "icon": {
                     "on": "mdi:flash-triangle",
