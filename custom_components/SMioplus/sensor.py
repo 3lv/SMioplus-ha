@@ -66,7 +66,8 @@ class Sensor(SensorEntity):
         # Custon setup
         # I Don't like this hardcoded setup, maybe add a setup com in data.py
         if type == "opto_cnt":
-            self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
+            res = self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
+            _LOGGER.error(res)
         ## END
 
     def update(self):

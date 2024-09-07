@@ -17,7 +17,7 @@ SM_MAP = {
                 "chan_no": 8,
                 "uom": "",
                 "com": {
-                    "get": "getOptoCh",
+                    "get": "getOptoCount",
                 },
                 "icon": {
                     "on": "mdi:mdi-numeric",
