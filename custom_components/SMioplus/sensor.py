@@ -72,6 +72,8 @@ class Sensor(SensorEntity):
 
     def update(self):
         time.sleep(self._short_timeout)
+        self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
+        time.sleep(self._short_timeout)
         try:
             self._value = self._SM_get(self._chan)
         except Exception as ex:
@@ -81,6 +83,9 @@ class Sensor(SensorEntity):
             self._icon = self._icons["on"]
         else:
             self._icon = self._icons["off"]
+        _LOGGER.error(self._value)
+        if type == "opto_cnt":
+            _LOGGER.error(self._SM.getOptoCount(self._stack, self._chan))
 
     @property
     def unique_id(self):
