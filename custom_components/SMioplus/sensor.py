@@ -63,6 +63,12 @@ class Sensor(SensorEntity):
             return getattr(self._SM, com["get"])(self._stack, *args)
         self._SM_get = _aux_SM_get
 
+        # Custon setup
+        # I Don't like this hardcoded setup, maybe add a setup com in data.py
+        if type == "opto_cnt":
+            self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
+        ## END
+
     def update(self):
         time.sleep(self._short_timeout)
         try:

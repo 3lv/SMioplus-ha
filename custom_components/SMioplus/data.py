@@ -13,6 +13,17 @@ SM_MAP = {
                     "off": "mdi:mdi-numeric"
                 }
         },
+        "opto_cnt": {
+                "chan_no": 8,
+                "uom": "",
+                "com": {
+                    "get": "getOptoCount",
+                },
+                "icon": {
+                    "on": "mdi:mdi-numeric",
+                    "off": "mdi:mdi-numeric"
+                }
+        },
         "adc": {
                 "chan_no": 8,
                 "uom": "V",
