@@ -65,14 +65,17 @@ class Sensor(SensorEntity):
 
         # Custon setup
         # I Don't like this hardcoded setup, maybe add a setup com in data.py
-        if type == "opto_cnt":
+        if self._type == "opto_cnt":
+            ## THIS DOESN"T WORK IDK WHY
             res = self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
             _LOGGER.error(res)
         ## END
 
     def update(self):
-        time.sleep(self._short_timeout)
-        self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
+        ## IDK WHY THIS ONLY WORKS HERE
+        if self._type == "opto_cnt":
+            time.sleep(self._short_timeout)
+            self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
         time.sleep(self._short_timeout)
         try:
             self._value = self._SM_get(self._chan)
@@ -84,8 +87,6 @@ class Sensor(SensorEntity):
         else:
             self._icon = self._icons["off"]
         _LOGGER.error(self._value)
-        if type == "opto_cnt":
-            _LOGGER.error(self._SM.getOptoCount(self._stack, self._chan))
 
     @property
     def unique_id(self):

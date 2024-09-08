@@ -33,7 +33,7 @@ def load_platform(hass, entity_config):
         for platform_type, attr in SM_MAP.items():
             if entity_config[CONF_TYPE] in attr:
                 hass.helpers.discovery.load_platform(
-                        platform_type, DOMAIN, entity_config, entity_config
+                        platform_type, DOMAIN, entity_config, {}
                 )
 
 def load_all_platforms(hass, stack=0):
