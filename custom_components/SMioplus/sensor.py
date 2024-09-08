@@ -63,20 +63,20 @@ class Sensor(SensorEntity):
             return getattr(self._SM, com["get"])(self._stack, *args)
         self._SM_get = _aux_SM_get
 
-        # Custon setup
+        # Custom setup
         # I Don't like this hardcoded setup, maybe add a setup com in data.py
         if self._type == "opto_cnt":
             self._SM.rstOptoCount(self._stack, self._chan)
             ## THIS DOESN"T WORK IDK WHY
             res = self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
-            _LOGGER.error(res)
+            _LOGGER.error(res) # res is 1, so it SHOULD be working
         ## END
 
     def update(self):
-        ## IDK WHY THIS ONLY WORKS HERE
         if self._type == "opto_cnt":
             time.sleep(self._short_timeout)
-            self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
+            ## IT DOESN"T WORK WITHOUT THIS IDK WHY
+            #self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
         time.sleep(self._short_timeout)
         try:
             self._value = self._SM_get(self._chan)
