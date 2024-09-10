@@ -1,3 +1,8 @@
+DEFAULT_ICONS = {
+        "on": "mdi:numeric",
+        "off": "mdi:numeric-0",
+}
+
 import voluptuous as vol
 import logging
 import time
@@ -14,10 +19,9 @@ from homeassistant.helpers.entity import generate_entity_id
 
 from . import (
         DOMAIN, CONF_STACK, CONF_TYPE, CONF_CHAN, CONF_NAME,
-        NAME_PREFIX,
         SM_MAP
 )
-SM_SENSOR_MAP = SM_MAP["sensor"]
+SM_MAP = SM_MAP["sensor"]
 
 #SCHEMA_EXTEND = {
 #	vol.Optional(CONF_NAME, default=""): cv.string,
@@ -42,21 +46,20 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 	)])
 
 class Sensor(SensorEntity):
-    """Sequent Microsystems SMioplus Sensor"""
     def __init__(self, name, stack, type, chan, hass):
+        self._SM = SMioplus
         generated_name = DOMAIN + str(stack) + "_" + type + "_" + str(chan)
         self._unique_id = generate_entity_id("sensor.{}", generated_name, hass=hass)
         self._name = name or generated_name
         self._stack = int(stack)
         self._type = type
         self._chan = int(chan)
-        self._SM = SMioplus
         # Altering class so alln functions have the same format
-        com = SM_SENSOR_MAP[self._type]["com"]
+        com = SM_MAP[self._type]["com"]
         self._short_timeout = .05
-        self._icons = SM_SENSOR_MAP[self._type]["icon"]
+        self._icons = SM_MAP[self._type].get("icon", DEFAULT_ICONS);
         self._icon = self._icons["off"]
-        self._uom = SM_SENSOR_MAP[self._type]["uom"]
+        self._uom = SM_MAP[self._type]["uom"]
         self._value = 0
         self._SM_get = getattr(self._SM, com["get"])
         def _aux_SM_get(*args):
@@ -76,7 +79,7 @@ class Sensor(SensorEntity):
         if self._type == "opto_cnt":
             time.sleep(self._short_timeout)
             ## IT DOESN"T WORK WITHOUT THIS IDK WHY
-            #self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
+            self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
         time.sleep(self._short_timeout)
         try:
             self._value = self._SM_get(self._chan)

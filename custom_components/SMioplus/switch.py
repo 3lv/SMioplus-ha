@@ -1,3 +1,8 @@
+DEFAULT_ICONS = {
+        "on": "mdi:toggle-switch-variant",
+        "off": "mdi:toggle-switch-variant-off",
+}
+
 import voluptuous as vol
 import libioplus as SMioplus
 import logging
@@ -17,7 +22,7 @@ from . import (
         NAME_PREFIX,
         SM_MAP
 )
-SM_SWITCH_MAP = SM_MAP["switch"]
+SM_MAP = SM_MAP["switch"]
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -37,14 +42,14 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 class Switch(SwitchEntity):
     """Sequent Microsystems HomeAutomation Switch"""
     def __init__(self, name, stack, type, chan, hass):
+        self._SM = SMioplus
         generated_name = DOMAIN + str(stack) + "_" + type + "_" + str(chan)
         self._unique_id = generate_entity_id("switch.{}", generated_name, hass=hass)
         self._name = name or generated_name
         self._stack = int(stack)
         self._type = type
         self._chan = int(chan)
-        self._SM = SMioplus
-        com = SM_SWITCH_MAP[self._type]["com"]
+        com = SM_MAP[self._type]["com"]
         def _aux_SM_get(*args):
             return getattr(self._SM, com["get"])(self._stack, *args)
         self._SM_get = _aux_SM_get
@@ -53,7 +58,7 @@ class Switch(SwitchEntity):
         self._SM_set = _aux_SM_set
         self._is_on = self._SM_get(self._chan)
         self._short_timeout = .05
-        self._icons = SM_SWITCH_MAP[self._type]["icon"]
+        self._icons = SM_MAP[self._type].get("icon", DEFAULT_ICONS);
         self._icon = self._icons["off"]
 
     def update(self):

@@ -7,10 +7,6 @@ SM_MAP = {
             "com": {
                 "set": "rstOptoCount",
             },
-            "icon": {
-                "on": "mdi:mdi-button-pointer",
-                "off": "mdi:mdi-button-pointer"
-            }
         }
     },
     "sensor":  {
@@ -21,8 +17,8 @@ SM_MAP = {
                     "get": "getOptoCh",
                 },
                 "icon": {
-                    "on": "mdi:mdi-numeric",
-                    "off": "mdi:mdi-numeric"
+                    "on": "mdi:numeric",
+                    "off": "mdi:numeric"
                 }
         },
         "opto_cnt": {
@@ -32,8 +28,8 @@ SM_MAP = {
                     "get": "getOptoCount",
                 },
                 "icon": {
-                    "on": "mdi:mdi-numeric",
-                    "off": "mdi:mdi-numeric"
+                    "on": "mdi:numeric",
+                    "off": "mdi:numeric"
                 }
         },
         "adc": {
