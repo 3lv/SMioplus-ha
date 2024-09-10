@@ -49,11 +49,11 @@ class Switch(SwitchEntity):
         self._stack = int(stack)
         self._type = type
         self._chan = int(chan)
-        self._is_on = self._SM_get(self._chan)
         self._short_timeout = .05
         self._icons = DEFAULT_ICONS | SM_MAP[self._type].get("icon", {})
         self._icon = self._icons["off"]
         self.__SM__init()
+        self._is_on = self._SM_get(self._chan)
 
     def __SM__init(self):
         com = SM_MAP[self._type]["com"]
