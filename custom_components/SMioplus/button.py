@@ -51,7 +51,7 @@ class Button(ButtonEntity):
             return getattr(self._SM, com["set"])(self._stack, *args)
         self._SM_set = _aux_SM_set
         self._short_timeout = .05
-        self._icons = SM_MAP[self._type].get("icon", DEFAULT_ICONS);
+        self._icons = SM_MAP[self._type].get("icon", {}) | DEFAULT_ICONS
         self._icon = self._icons["off"]
 
     @property

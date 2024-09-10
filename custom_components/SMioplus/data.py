@@ -17,8 +17,8 @@ SM_MAP = {
                     "get": "getOptoCh",
                 },
                 "icon": {
-                    "on": "mdi:numeric",
-                    "off": "mdi:numeric"
+                    "on": "mdi:numeric-1",
+                    "off": "mdi:numeric-0"
                 }
         },
         "opto_cnt": {
@@ -27,10 +27,6 @@ SM_MAP = {
                 "com": {
                     "get": "getOptoCount",
                 },
-                "icon": {
-                    "on": "mdi:numeric",
-                    "off": "mdi:numeric"
-                }
         },
         "adc": {
                 "chan_no": 8,
@@ -51,10 +47,6 @@ SM_MAP = {
                     "get": "getRelayCh",
                     "set": "setRelayCh"
                 },
-                "icon": {
-                    "on": "mdi:toggle-switch-variant",
-                    "off": "mdi:toggle-switch-variant-off",
-                }
         }
     },
     "number": {
@@ -85,8 +77,8 @@ SM_MAP = {
                     "set": "_fixed_setOdPwm"
                 },
                 "icon": {
-                    "on": "mdi:flash-triangle",
-                    "off": "mdi:flash-triangle"
+                    "on": "mdi:flash-percent",
+                    "off": "mdi:flash-percent"
                 }
         },
     },

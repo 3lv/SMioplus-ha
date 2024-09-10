@@ -57,7 +57,7 @@ class Sensor(SensorEntity):
         # Altering class so alln functions have the same format
         com = SM_MAP[self._type]["com"]
         self._short_timeout = .05
-        self._icons = SM_MAP[self._type].get("icon", DEFAULT_ICONS);
+        self._icons = SM_MAP[self._type].get("icon", {}) | DEFAULT_ICONS
         self._icon = self._icons["off"]
         self._uom = SM_MAP[self._type]["uom"]
         self._value = 0
