@@ -1,6 +1,18 @@
 DOMAIN = "SMioplus"
 NAME_PREFIX = "smio"
 SM_MAP = {
+    "button": {
+        "opto_cnt_rst": {
+            "chan_no": 8,
+            "com": {
+                "set": "rstOptoCount",
+            },
+            "icon": {
+                "on": "mdi:mdi-button-pointer",
+                "off": "mdi:mdi-button-pointer"
+            }
+        }
+    },
     "sensor":  {
         "opto": {
                 "chan_no": 8,
