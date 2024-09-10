@@ -50,7 +50,6 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 class Number(NumberEntity):
     """Sequent Microsystems Multiio Switch"""
     def __init__(self, name, stack, type, chan, hass):
-        self.__SM__init()
         generated_name = DOMAIN + str(stack) + "_" + type + "_" + str(chan)
         self._unique_id = generate_entity_id("number.{}", generated_name, hass=hass)
         self._name = name or generated_name
@@ -65,6 +64,7 @@ class Number(NumberEntity):
         self._max_value = SM_MAP[self._type]["max_value"]
         self._step = SM_MAP[self._type]["step"]
         self._value = 0
+        self.__SM__init()
 
     def __SM__init(self):
         com = SM_MAP[self._type]["com"]

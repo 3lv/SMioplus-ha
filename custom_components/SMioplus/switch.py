@@ -43,7 +43,6 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 class Switch(SwitchEntity):
     """Sequent Microsystems HomeAutomation Switch"""
     def __init__(self, name, stack, type, chan, hass):
-        self.__SM__init()
         generated_name = DOMAIN + str(stack) + "_" + type + "_" + str(chan)
         self._unique_id = generate_entity_id("switch.{}", generated_name, hass=hass)
         self._name = name or generated_name
@@ -54,6 +53,7 @@ class Switch(SwitchEntity):
         self._short_timeout = .05
         self._icons = DEFAULT_ICONS | SM_MAP[self._type].get("icon", {})
         self._icon = self._icons["off"]
+        self.__SM__init()
 
     def __SM__init(self):
         com = SM_MAP[self._type]["com"]

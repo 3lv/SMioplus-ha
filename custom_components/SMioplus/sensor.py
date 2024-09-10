@@ -47,7 +47,6 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 
 class Sensor(SensorEntity):
     def __init__(self, name, stack, type, chan, hass):
-        self.__SM__init()
         generated_name = DOMAIN + str(stack) + "_" + type + "_" + str(chan)
         self._unique_id = generate_entity_id("sensor.{}", generated_name, hass=hass)
         self._name = name or generated_name
@@ -60,6 +59,7 @@ class Sensor(SensorEntity):
         self._icon = self._icons["off"]
         self._uom = SM_MAP[self._type]["uom"]
         self._value = 0
+        self.__SM__init()
 
         # Custom setup
         # I Don't like this hardcoded setup, maybe add a setup com in data.py
