@@ -7,6 +7,7 @@ import voluptuous as vol
 import libioplus as SMioplus
 import logging
 import time
+import inspect
 
 from homeassistant.const import (
 	CONF_NAME
@@ -20,7 +21,7 @@ from homeassistant.helpers.entity import generate_entity_id
 from . import (
         DOMAIN, CONF_STACK, CONF_TYPE, CONF_CHAN, CONF_NAME,
         NAME_PREFIX,
-        SM_MAP
+        SM_MAP, SM_API
 )
 SM_MAP = SM_MAP["switch"]
 
@@ -42,24 +43,32 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 class Switch(SwitchEntity):
     """Sequent Microsystems HomeAutomation Switch"""
     def __init__(self, name, stack, type, chan, hass):
-        self._SM = SMioplus
+        self.__SM__init()
         generated_name = DOMAIN + str(stack) + "_" + type + "_" + str(chan)
         self._unique_id = generate_entity_id("switch.{}", generated_name, hass=hass)
         self._name = name or generated_name
         self._stack = int(stack)
         self._type = type
         self._chan = int(chan)
-        com = SM_MAP[self._type]["com"]
-        def _aux_SM_get(*args):
-            return getattr(self._SM, com["get"])(self._stack, *args)
-        self._SM_get = _aux_SM_get
-        def _aux_SM_set(*args):
-            return getattr(self._SM, com["set"])(self._stack, *args)
-        self._SM_set = _aux_SM_set
         self._is_on = self._SM_get(self._chan)
         self._short_timeout = .05
         self._icons = DEFAULT_ICONS | SM_MAP[self._type].get("icon", {})
         self._icon = self._icons["off"]
+
+    def __SM__init(self):
+        com = SM_MAP[self._type]["com"]
+        self._SM = SM_API
+        if inspect.isclass(self._SM):
+            self._SM = self._SM(self._stack)
+            self._SM_get = getattr(self._SM, com["get"])
+            self._SM_set = getattr(self._SM, com["set"])
+        else:
+            def _aux_SM_get(*args):
+                return getattr(self._SM, com["get"])(self._stack, *args)
+            self._SM_get = _aux_SM_get
+            def _aux_SM_set(*args):
+                return getattr(self._SM, com["set"])(self._stack, *args)
+            self._SM_set = _aux_SM_set
 
     def update(self):
         time.sleep(self._short_timeout)

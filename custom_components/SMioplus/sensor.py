@@ -19,7 +19,7 @@ from homeassistant.helpers.entity import generate_entity_id
 
 from . import (
         DOMAIN, CONF_STACK, CONF_TYPE, CONF_CHAN, CONF_NAME,
-        SM_MAP
+        SM_MAP, SM_API
 )
 SM_MAP = SM_MAP["sensor"]
 
@@ -47,7 +47,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 
 class Sensor(SensorEntity):
     def __init__(self, name, stack, type, chan, hass):
-        self._SM = SMioplus
+        self.__SM__init()
         generated_name = DOMAIN + str(stack) + "_" + type + "_" + str(chan)
         self._unique_id = generate_entity_id("sensor.{}", generated_name, hass=hass)
         self._name = name or generated_name
@@ -55,16 +55,11 @@ class Sensor(SensorEntity):
         self._type = type
         self._chan = int(chan)
         # Altering class so alln functions have the same format
-        com = SM_MAP[self._type]["com"]
         self._short_timeout = .05
         self._icons = DEFAULT_ICONS | SM_MAP[self._type].get("icon", {})
         self._icon = self._icons["off"]
         self._uom = SM_MAP[self._type]["uom"]
         self._value = 0
-        self._SM_get = getattr(self._SM, com["get"])
-        def _aux_SM_get(*args):
-            return getattr(self._SM, com["get"])(self._stack, *args)
-        self._SM_get = _aux_SM_get
 
         # Custom setup
         # I Don't like this hardcoded setup, maybe add a setup com in data.py
@@ -74,6 +69,17 @@ class Sensor(SensorEntity):
             res = self._SM.cfgOptoEdgeCount(self._stack, self._chan, 1)
             _LOGGER.error(res) # res is 1, so it SHOULD be working
         ## END
+
+    def __SM__init(self):
+        com = SM_MAP[self._type]["com"]
+        self._SM = SM_API
+        if inspect.isclass(self._SM):
+            self._SM = self._SM(self._stack)
+            self._SM_get = getattr(self._SM, com["get"])
+        else:
+            def _aux_SM_get(*args):
+                return getattr(self._SM, com["get"])(self._stack, *args)
+            self._SM_get = _aux_SM_get
 
     def update(self):
         if self._type == "opto_cnt":

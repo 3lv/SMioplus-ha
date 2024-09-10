@@ -1,3 +1,5 @@
+import libioplus
+API = libioplus
 DOMAIN = "SMioplus"
 NAME_PREFIX = "smio"
 SM_MAP = {

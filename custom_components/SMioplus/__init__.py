@@ -12,6 +12,7 @@ from . import data
 DOMAIN = data.DOMAIN
 NAME_PREFIX = data.NAME_PREFIX
 SM_MAP = data.SM_MAP
+SM_API = data.API
 
 CONF_NAME = CONF_NAME
 CONF_STACK = "stack"
@@ -69,7 +70,7 @@ def setup(hass, config):
                 [type, chan] = entity.rsplit("_", 1)
                 chan = int(chan)
             except:
-                _LOGGER.error(entity, " doesn't respect type-chan format")
+                _LOGGER.error(entity, " doesn't respect type_channel format")
                 continue
             entity_config = card_config[entity] or {}
             entity_config |= {

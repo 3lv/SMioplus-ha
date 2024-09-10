@@ -21,7 +21,7 @@ from homeassistant.helpers.entity import generate_entity_id
 from . import (
         DOMAIN, CONF_STACK, CONF_TYPE, CONF_CHAN, CONF_NAME,
         COM_NOGET,
-        SM_MAP
+        SM_MAP, SM_API
 )
 SM_MAP = SM_MAP["number"]
 
@@ -50,7 +50,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 class Number(NumberEntity):
     """Sequent Microsystems Multiio Switch"""
     def __init__(self, name, stack, type, chan, hass):
-        self._SM = SMioplus
+        self.__SM__init()
         generated_name = DOMAIN + str(stack) + "_" + type + "_" + str(chan)
         self._unique_id = generate_entity_id("number.{}", generated_name, hass=hass)
         self._name = name or generated_name
@@ -65,18 +65,21 @@ class Number(NumberEntity):
         self._max_value = SM_MAP[self._type]["max_value"]
         self._step = SM_MAP[self._type]["step"]
         self._value = 0
-        self.__init_getset__()
 
-    def __init_getset__(self):
-        # Altering class so all functions have the same format
+    def __SM__init(self):
         com = SM_MAP[self._type]["com"]
-        self._SM_get = getattr(self._SM, com["get"])
-        def _aux_SM_get(*args):
-            return getattr(self._SM, com["get"])(self._stack, *args)
-        self._SM_get = _aux_SM_get
-        def _aux_SM_set(*args):
-            return getattr(self._SM, com["set"])(self._stack, *args)
-        self._SM_set = _aux_SM_set
+        self._SM = SM_API
+        if inspect.isclass(self._SM):
+            self._SM = self._SM(self._stack)
+            self._SM_get = getattr(self._SM, com["get"])
+            self._SM_set = getattr(self._SM, com["set"])
+        else:
+            def _aux_SM_get(*args):
+                return getattr(self._SM, com["get"])(self._stack, *args)
+            self._SM_get = _aux_SM_get
+            def _aux_SM_set(*args):
+                return getattr(self._SM, com["set"])(self._stack, *args)
+            self._SM_set = _aux_SM_set
 
     def update(self):
         time.sleep(self._short_timeout)
@@ -128,7 +131,9 @@ class Number(NumberEntity):
         except Exception as ex:
             _LOGGER.error(DOMAIN + " %s setting value failed, %e", self._type, ex)
 
+## Lazy class, uses the set value as the get value
 class Number_NOGET(Number):
+    ## TODO
     def update(self):
         time.sleep(self._short_timeout)
         if self._value != 0:
@@ -143,9 +148,13 @@ class Number_NOGET(Number):
         except Exception as ex:
             _LOGGER.error(DOMAIN + " %s setting value failed, %e", self._type, ex)
 
-    def __init_getset__(self):
+    def __SM__init(self):
         com = SM_MAP[self._type]["com"]
-        # Skip _SM_get command
-        def _aux_SM_set(*args):
-            return getattr(self._SM, com["set"])(self._stack, *args)
-        self._SM_set = _aux_SM_set
+        self._SM = SM_API
+        if inspect.isclass(self._SM):
+            self._SM = self._SM(self._stack)
+            self._SM_set = getattr(self._SM, com["set"])
+        else:
+            def _aux_SM_set(*args):
+                return getattr(self._SM, com["set"])(self._stack, *args)
+            self._SM_set = _aux_SM_set
