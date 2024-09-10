@@ -76,8 +76,8 @@ SM_MAP = {
                     "set": "_fixed_setOdPwm"
                 },
                 "icon": {
-                    "on": "mdi:flash-percent",
-                    "off": "mdi:flash-percent"
+                    "on": "mdi:percent",
+                    "off": "mdi:percent"
                 }
         },
     },
