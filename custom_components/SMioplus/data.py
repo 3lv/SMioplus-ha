@@ -18,7 +18,6 @@ SM_MAP = {
                 },
                 "icon": {
                     "on": "mdi:numeric-1",
-                    "off": "mdi:numeric-0"
                 }
         },
         "opto_cnt": {
